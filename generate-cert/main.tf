@@ -21,10 +21,10 @@ resource "tls_self_signed_cert" "ca" {
     organization = var.organization_name
   }
 
-#  # Store the CA public key in a file.
-#  provisioner "local-exec" {
-#    command = "echo '${tls_self_signed_cert.ca.cert_pem}' > '${var.ca_public_key_file_path}' && chmod ${var.permissions} '${var.ca_public_key_file_path}' && chown ${var.owner} '${var.ca_public_key_file_path}'"
-#  }
+  #  # Store the CA public key in a file.
+  #  provisioner "local-exec" {
+  #    command = "echo '${tls_self_signed_cert.ca.cert_pem}' > '${var.ca_public_key_file_path}' && chmod ${var.permissions} '${var.ca_public_key_file_path}' && chown ${var.owner} '${var.ca_public_key_file_path}'"
+  #  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -37,9 +37,9 @@ resource "tls_private_key" "cert" {
   rsa_bits    = var.private_key_rsa_bits
 
   # Store the certificate's private key in a file.
-#  provisioner "local-exec" {
-#    command = "echo '${tls_private_key.cert.private_key_pem}' > '${var.private_key_file_path}' && chmod ${var.permissions} '${var.private_key_file_path}' && chown ${var.owner} '${var.private_key_file_path}'"
-#  }
+  #  provisioner "local-exec" {
+  #    command = "echo '${tls_private_key.cert.private_key_pem}' > '${var.private_key_file_path}' && chmod ${var.permissions} '${var.private_key_file_path}' && chown ${var.owner} '${var.private_key_file_path}'"
+  #  }
 }
 
 resource "tls_cert_request" "cert" {
@@ -63,21 +63,21 @@ resource "tls_locally_signed_cert" "cert" {
   validity_period_hours = var.validity_period_hours
   allowed_uses          = var.allowed_uses
 
-#  # Store the certificate's public key in a file.
-#  provisioner "local-exec" {
-#    command = "echo '${tls_locally_signed_cert.cert.cert_pem}' > '${var.public_key_file_path}' && chmod ${var.permissions} '${var.public_key_file_path}' && chown ${var.owner} '${var.public_key_file_path}'"
-#  }
+  #  # Store the certificate's public key in a file.
+  #  provisioner "local-exec" {
+  #    command = "echo '${tls_locally_signed_cert.cert.cert_pem}' > '${var.public_key_file_path}' && chmod ${var.permissions} '${var.public_key_file_path}' && chown ${var.owner} '${var.public_key_file_path}'"
+  #  }
 }
 
 
 resource "pkcs12_from_pem" "my_pkcs12" {
-  password = var.password
-  cert_pem = tls_locally_signed_cert.cert.cert_pem
-  private_key_pem  = tls_private_key.cert.private_key_pem
-  ca_pem = tls_self_signed_cert.ca.cert_pem
+  password        = var.password
+  cert_pem        = tls_locally_signed_cert.cert.cert_pem
+  private_key_pem = tls_private_key.cert.private_key_pem
+  ca_pem          = tls_self_signed_cert.ca.cert_pem
 }
 
 resource "local_file" "result" {
-  filename           = var.pfx_filename
-  content_base64     = pkcs12_from_pem.my_pkcs12.result
+  filename       = var.pfx_filename
+  content_base64 = pkcs12_from_pem.my_pkcs12.result
 }

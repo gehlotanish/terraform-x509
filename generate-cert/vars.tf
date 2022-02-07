@@ -6,7 +6,7 @@ variable "password" {
 
 variable "pfx_filename" {
   description = "Write PKCS12 File name"
-  type        = string 
+  type        = string
   default     = ""
 }
 
