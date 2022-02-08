@@ -2,6 +2,28 @@ variable "password" {
   description = "pkcs12 password"
   type        = string
   default     = "123456789"
+  sensitive   = true
+}
+
+
+variable "kv_name" {
+  type    = string
+  default = ""
+}
+
+variable "kv_rg" {
+  type    = string
+  default = ""
+}
+
+variable "kv_certname" {
+  type    = string
+  default = ""
+}
+
+variable "kv_secretname" {
+  type    = string
+  default = ""
 }
 
 variable "pfx_filename" {
